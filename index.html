@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omergames - פורטל המשחקים של עומר!</title>
+    
+    <!-- פונט פופולרי ומודרני בעברית -->
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- ספריית קודי QR חינמית ובטוחה שיוצרת את ה-QR על המסך -->
+    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --primary-color: #8b5cf6;
+            --primary-hover: #7c3aed;
+            --whatsapp-color: #25d366;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Rubik', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            margin-top: 20px;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+        }
+
+        /* גריד המשחקים - מוכן לעוד משחקים בעתיד */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        /* כרטיס משחק */
+        .game-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid #334155;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(139, 92, 246, 0.2);
+            border-color: var(--primary-color);
+        }
+
+        /* תמונת המשחק */
+        .game-thumbnail-wrapper {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+            background-color: #000;
+        }
+
+        .game-thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .game-card:hover .game-thumbnail {
+            transform: scale(1.05);
+        }
+
+        /* תוכן הכרטיס */
+        .game-info {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            flex-grow: 1;
+        }
+
+        .game-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        /* אזור הכלים: כפתורים + QR */
+        .game-actions-container {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .buttons-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex-grow: 1;
+        }
+
+        /* כפתורים */
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-play {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        .btn-play:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-whatsapp {
+            background-color: var(--whatsapp-color);
+            color: #fff;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #20ba5a;
+        }
+
+        /* קוביות ה-QR קוד */
+        .qr-box {
+            background-color: white;
+            padding: 8px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 96px;
+            height: 96px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        footer {
+            margin-top: 60px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-align: center;
+            padding-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Omergames</h1>
+        <p>ברוכים הבאים לפורטל המשחקים הרשמי של עומר!</p>
+    </header>
+
+    <main class="games-grid">
+        
+        <!-- כרטיס משחק מספר 1 -->
+        <article class="game-card">
+            <div class="game-thumbnail-wrapper">
+                <!-- כאן שמנו תמונת פלייסהולדר מגניבה מגיימינג. כדאי להחליף אותה לצילום מסך אמיתי בהמשך -->
+                <img class="game-thumbnail" src="https://images.unsplash.com/photo-1612287230202-1bf1d85d1bdf?w=500&auto=format&fit=crop&q=80" alt="צילום מסך של המשחק">
+            </div>
+            
+            <div class="game-info">
+                <h2 class="game-title">משחק הבדיקה הראשון 🎮</h2>
+                
+                <div class="game-actions-container">
+                    <!-- כפתורי פעולה -->
+                    <div class="buttons-stack">
+                        <a href="https://moshemery.github.io/TestG1/" target="_blank" class="btn btn-play">שחק עכשיו! 🚀</a>
+                        
+                        <!-- כפתור שיתוף לוואטסאפ עם טקסט מוכן מראש -->
+                        <a href="https://wa.me/?text=%D7%AA%D7%A5%D7%90%D7%95%20%D7%9C%D7%A5%D7%90%D7%95%20%D7%9C%D7%A9%D7%97%D7%A7%20%D7%91%D7%9E%D7%A9%D7%97%D7%A7%20%D7%94%D7%97%D7%93%D7%A9%20%D7%A9%D7%9C%20%D7%A2%D7%95%D7%9E%D7%A8%21%20%20https%3A%2F%2Fmoshemery.github.io%2FTestG1%2F" target="_blank" class="btn btn-whatsapp">שתף בוואטסאפ 💬</a>
+                    </div>
+                    
+                    <!-- ריבוע ה-QR קוד - הסקריפט למטה ימלא אותו אוטומטית -->
+                    <div class="qr-box" id="qrcode1" title="סרקו כדי לשחק בטלפון!"></div>
+                </div>
+            </div>
+        </article>
+
+    </main>
+
+    <footer>
+        <p>© 2026 Omergames. כל הזכויות שמורות לעומר.</p>
+    </footer>
+
+    <!-- סקריפט שמייצר את ה-QR קוד בצורה דינמית ישירות מהלינק -->
+    <script>
+        new QRCode(document.getElementById("qrcode1"), {
+            text: "https://moshemery.github.io/TestG1/",
+            width: 80,
+            height: 80,
+            colorDark : "#000000",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+        });
+    </script>
+</body>
+</html>
